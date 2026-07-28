@@ -1,0 +1,31 @@
+flowchart LR
+    user[Analyst / Response Lead] --> frontend[Web Dashboard]
+    frontend --> api[FastAPI Backend]
+
+    api --> auth[Auth Provider]
+    api --> db[(PostgreSQL + PostGIS)]
+    api --> storage[(Object Storage)]
+    api --> queue[Job Queue]
+
+    queue --> preprocess[Preprocessing Workers]
+    preprocess --> storage
+    preprocess --> inference[ML Inference Service]
+
+    inference --> registry[Model Registry]
+    inference --> storage
+    inference --> postprocess[Postprocessing Workers]
+
+    postprocess --> db
+    postprocess --> storage
+    api --> reports[Report Service]
+    reports --> storage
+
+    api --> observability[Observability]
+    preprocess --> observability
+    inference --> observability
+    postprocess --> observability
+
+    observability --> logs[Logs]
+    observability --> metrics[Metrics]
+    observability --> traces[Traces]
+    observability --> modelmon[Model Monitoring]
